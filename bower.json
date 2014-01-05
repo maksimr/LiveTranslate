@@ -1,0 +1,10 @@
+{
+    "name": "omni-translate",
+    "version": "0.0.0",
+    "dependencies": {
+        "angular": "1.2.7"
+    },
+    "devDependencies": {
+        "angular-mocks": "1.2.7"
+    }
+}

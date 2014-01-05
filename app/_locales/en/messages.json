@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "omni-translate",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "Instant translate in omnibox",
+    "description": "The description of the application"
+  }
+}
