@@ -1,13 +1,22 @@
 'use strict';
 
-chrome.runtime.onInstalled.addListener(function(details) {
-    console.log('previousVersion', details.previousVersion);
-});
+angular.module('runApp', ['chrome', 'translator']).run(['omnibox', 'google',
+    function(omnibox, google) {
+        omnibox.onInputChanged.addListener(function(text, suggest) {
 
-chrome.omnibox.onInputChanged.addListener(function(text) {
-    console.log('onInputChanged', text);
-});
+            google.translate(text).then(function(translations) {
+                return translations.map(function(translate) {
+                    return {
+                        content: translate,
+                        description: translate
+                    };
+                });
+            }).then(suggest);
 
-chrome.omnibox.onInputEntered.addListener(function(text) {
-    console.log('onInputEntered', text);
-});
+        });
+
+        omnibox.onInputEntered.addListener(function( /*text*/ ) {});
+    }
+]);
+
+angular.bootstrap(null, ['runApp']);

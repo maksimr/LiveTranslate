@@ -1,17 +1,8 @@
 /*jshint camelcase: false*/
 // Generated on 2014-01-04 using generator-chrome-extension 0.2.5
 'use strict';
-var mountFolder = function (connect, dir) {
-    return connect.static(require('path').resolve(dir));
-};
 
-// # Globbing
-// for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
-// use this if you want to recursively match all subfolders:
-// 'test/spec/**/*.js'
-
-module.exports = function (grunt) {
+module.exports = function(grunt) {
     // show elapsed time at the end
     require('time-grunt')(grunt);
     // load all grunt tasks
@@ -29,34 +20,18 @@ module.exports = function (grunt) {
             options: {
                 spawn: false
             },
-            coffee: {
-                files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-                tasks: ['coffee:dist']
-            },
-            coffeeTest: {
-                files: ['test/spec/{,*/}*.coffee'],
-                tasks: ['coffee:test']
+            test: {
+                files: [
+                    'test/**/*.js',
+                    '<%= yeoman.app %>/scripts/{,*/}*.js'
+                ],
+                tasks: ['karma:unit']
             },
             compass: {
-                files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+                files: [
+                    '<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'
+                ],
                 tasks: ['compass:server']
-            }
-        },
-        connect: {
-            options: {
-                port: 9000,
-                // change this to '0.0.0.0' to access the server from outside
-                hostname: 'localhost'
-            },
-            test: {
-                options: {
-                    middleware: function (connect) {
-                        return [
-                            mountFolder(connect, '.tmp'),
-                            mountFolder(connect, 'test')
-                        ];
-                    }
-                }
             }
         },
         clean: {
@@ -82,32 +57,10 @@ module.exports = function (grunt) {
                 'test/spec/{,*/}*.js'
             ]
         },
-        mocha: {
-            all: {
-                options: {
-                    run: true,
-                    urls: ['http://localhost:<%= connect.options.port %>/index.html']
-                }
-            }
-        },
-        coffee: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/scripts',
-                    src: '{,*/}*.coffee',
-                    dest: '.tmp/scripts',
-                    ext: '.js'
-                }]
-            },
-            test: {
-                files: [{
-                    expand: true,
-                    cwd: 'test/spec',
-                    src: '{,*/}*.coffee',
-                    dest: '.tmp/spec',
-                    ext: '.js'
-                }]
+        karma: {
+            unit: {
+                configFile: 'karma.conf.js',
+                autoWatch: true
             }
         },
         compass: {
@@ -233,15 +186,12 @@ module.exports = function (grunt) {
         },
         concurrent: {
             server: [
-                'coffee:dist',
                 'compass:server'
             ],
             test: [
-                'coffee',
                 'compass'
             ],
             dist: [
-                'coffee',
                 'compass:dist',
                 'imagemin',
                 'svgmin',
@@ -253,7 +203,7 @@ module.exports = function (grunt) {
                 options: {
                     buildnumber: true,
                     background: {
-                        target:'scripts/background.js'
+                        target: 'scripts/background.js'
                     }
                 },
                 src: '<%= yeoman.app %>',
@@ -275,12 +225,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('test', [
-        'clean:server',
-        'concurrent:test',
-        'connect:test',
-        'mocha'
-    ]);
+    grunt.registerTask('test', ['mocha']);
 
     grunt.registerTask('build', [
         'clean:dist',
