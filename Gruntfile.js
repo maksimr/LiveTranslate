@@ -60,7 +60,7 @@ module.exports = function(grunt) {
         karma: {
             unit: {
                 configFile: 'karma.conf.js',
-                autoWatch: true
+                singleRun: true
             }
         },
         compass: {
@@ -225,7 +225,7 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('test', ['mocha']);
+    grunt.registerTask('test', ['karma:unit']);
 
     grunt.registerTask('build', [
         'clean:dist',
